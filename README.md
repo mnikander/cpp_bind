@@ -27,8 +27,8 @@ cmake --build out/ # out-of-source build
 Create function objects where one argument of a binary function has been bound:
 
 ```cpp
-    auto twoMinus = 2 >>= std::minus<int>{};  // bind left argument to 2
-    auto minusTwo = std::minus<int>{} <<= 2;  // bind right argument to 2
+    auto twoMinus = 2 >>= std::minus<>{};  // bind left argument to 2
+    auto minusTwo = std::minus<>{} <<= 2;  // bind right argument to 2
 ```
 
 ## Usage example: subtract one from each element
@@ -54,7 +54,7 @@ using namespace bind; // make the overloads for operator>>= and operator<<= avai
 std::transform(v.cbegin(),
                v.cend(),
                0,
-               std::minus<int>{} <<= 1); // bind right argument of 'minus' to equal 1
+               std::minus<>{} <<= 1); // bind right argument of 'minus' to equal 1
 ```
 
 For binary functions which have their own operator symbol, such as + - * / ect, a lambda expression is shorter, but for

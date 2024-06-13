@@ -8,7 +8,7 @@ namespace {
 
 TEST(bind_right, expicit_operator_example)
 {    
-    auto plusTwo     = bind::operator<<=(std::plus<int>{}, 2);
+    auto plusTwo     = bind::operator<<=(std::plus<>{}, 2);
     const int result = plusTwo(5);
     EXPECT_EQ(result, 7);
 }
@@ -17,7 +17,7 @@ TEST(bind_right, plus)
 {
     using namespace bind;
     
-    auto plusTwo     = std::plus<int>{} <<= 2;
+    auto plusTwo     = std::plus<>{} <<= 2;
     const int result = plusTwo(5);
     EXPECT_EQ(result, 7);
 }
@@ -26,7 +26,7 @@ TEST(bind_right, minus)
 {
     using namespace bind;
     
-    auto minusTwo    = std::minus<int>{} <<= 2;
+    auto minusTwo    = std::minus<>{} <<= 2;
     const int result = minusTwo(5);
     EXPECT_EQ(result, 3);
 }
@@ -50,7 +50,7 @@ TEST(bind_left, plus)
 {
     using namespace bind;
 
-    auto twoPlus     = 2 >>= std::plus<int>{};
+    auto twoPlus     = 2 >>= std::plus<>{};
     const int result = twoPlus(5);
     EXPECT_EQ(result, 7);
 }
@@ -59,7 +59,7 @@ TEST(bind_left, minus)
 {
     using namespace bind;
 
-    auto twoMinus    = 2 >>= std::minus<int>{};
+    auto twoMinus    = 2 >>= std::minus<>{};
     const int result = twoMinus(5);
     EXPECT_EQ(result, -3);
 }
