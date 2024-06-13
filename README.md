@@ -1,37 +1,6 @@
 # Argument binding
 
 Prototype a concise syntax for argument binding, using operator overloading.
-This can be used instead of lambda expressions in some contexts such as:
-
-```cpp
-const std::vector<int> v{1, 2, 4, 8};
-
-const int sum_squares = std::transform_reduce(v.cbegin(), v.cend(),
-                                              0,
-                                              std::Plus<int>{},
-                                              [](int i){ return i*i; }); // lambda expression to square a number
-```
-
-A simple syntax to bind the left and right arguments of a binary function could be:
-
-```cpp
-    2 >>= power()  // bind left argument to 2
-    power() <<= 2  // bind right argument to 2
-```
-
-Ideally, this would work for any function-like object, while rejecting booleans and integers as potential template arguments, to avoid collision with the usual operator<<= and operator>>= on primitive types.
-Perhaps std::enable_if could and should be used to enable it for function-like objects only?
-
-A usage example could look like this:
-
-```cpp
-const std::vector<int> v{1, 2, 4, 8};
-
-const int sum_squares = std::transform_reduce(v.cbegin(), v.cend(),
-                                              0,
-                                              std::Plus<int>{},
-                                              std::pow <<= 2.0); // bind right argument of 'pow' to equal 2.0
-```
 
 ## Getting started
 
@@ -52,3 +21,41 @@ cd ..
 cmake --build out/ # out-of-source build
 ./out/unit_tests
 ```
+
+## Simple example
+
+Create function objects where one argument of a binary function has been bound:
+
+```cpp
+    auto twoMinus = 2 >>= std::minus<int>{};  // bind left argument to 2
+    auto minusTwo = std::minus<int>{} <<= 2;  // bind right argument to 2
+```
+
+## Usage example: subtract one from each element
+
+Given:
+```cpp
+const std::vector<int> v{1, 2, 4, 8};
+std::vector<int> result(v.size());
+```
+
+This is how we would normally subtract one from each element in a sequence:
+```cpp
+std::transform(v.cbegin(),
+               v.cend(),
+               0,
+               [](int i){ return i-1; });
+```
+
+With the argument binding enabled, we can instead write it like this:
+```cpp
+using namespace bind; // make the overloads for operator>>= and operator<<= available
+
+std::transform(v.cbegin(),
+               v.cend(),
+               0,
+               std::minus<int>{} <<= 1); // bind right argument of 'minus' to equal 1
+```
+
+For binary functions which have their own operator symbol, such as + - * / ect, a lambda expression is shorter, but for
+function-like objects without its own special symbol, the overload syntax is shorter and simpler.
