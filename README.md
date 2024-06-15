@@ -10,16 +10,15 @@ sudo apt get install libgtest-dev cmake g++
 ```
 
 2. Clone the repo
+```bash
+git clone #...
+```
 
 3. Build and run:
 ```bash
-cd cpp_bind
-mkdir out
-cd out
-cmake ..
-cd ..
-cmake --build out/ # out-of-source build
-./out/unit_tests
+# out-of-source build
+cd cpp_bind && mkdir out && cd out && cmake .. && cd ..
+cmake --build out/ && ./out/unit_tests
 ```
 
 ## Simple example
